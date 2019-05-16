@@ -17,9 +17,9 @@ class Sesh(object):
         self.__msg_int = 0
         self.__att_int = 0
         self.__msg_uids = pd.read_sql(
-            'SELECT * from `final`.`email_msg_uids` WHERE not MsgUID in (select MsgUID from `final`.`email_msgs`) LIMIT 200', self.__engine)
+            'SELECT * from `final`.`email_msg_uids` WHERE not MsgUID in (select MsgUID from `final`.`email_msgs`) LIMIT 2000', self.__engine)
         self.__att_uids = pd.read_sql(
-            'SELECT * from `final`.`email_att_uids` WHERE not AttUID in (select AttUID from `final`.`email_atts`) LIMIT 200', self.__engine)
+            'SELECT * from `final`.`email_att_uids` WHERE not AttUID in (select AttUID from `final`.`email_atts`) LIMIT 2000', self.__engine)
         self.__ol_boxes = ["0000000088A9AE601D4FBF4092794F7DADA800F00180ABE5D4B62B1BBB4AA951CDA06B3165AD00000000010C0100",
                            "0000000052D39FFD9378D611965500508B5C12B401002F5A794942E9D21195FC0008C7E9CC5F000003DD578E0000"]
         self.__path = 'c:/pyext/'
@@ -45,6 +45,12 @@ class Sesh(object):
         df.columns = self.__colnames
         df.to_sql('thing0', con=self.__engine,
                   if_exists='replace', index=False)
+        dfatts = df['AttsUIDs'].T
+        x = dfatts.to_string(header=False, index=False).split('\n')
+        vals = [','.join(ele.split()) for ele in x]
+        y = ','.join(vals)
+
+        self.__df_msgs = pd.DataFrame()
 
     @property
     def DataFrameMsgs(self):

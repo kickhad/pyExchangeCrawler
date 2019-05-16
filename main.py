@@ -6,6 +6,7 @@ import pandas as pd
 
 # GET OUTLOOK NAMESAPACE
 session = Sesh()
+#pcur(session, session.Outlook.GetDefaultFolder(6))
 for box in session.ol_boxes:
     box_n = session.Outlook.GetFolderFromID(box)
     pcur(session, box_n.parent)
