@@ -1,14 +1,15 @@
 import configparser
-from sqlalchemy import create_engine
+#from sqlalchemy import create_engine
 
 # Load config_file
 config = configparser.ConfigParser()
 config.read('settings.ini')
 
 # easy access attribs
-path = config.['DEFAULT'].['path']
-db = config.['DATABASE'].['production']
-tmpdb = config.['DATABASE'].['temp']
+DEBUG = config['DEFAULT']['debug']
+PATH = config['DEFAULT']['path']
+DB_PROD = config['DATABASE']['production']
+DB_TEMP = config['DATABASE']['temp']
 
 
 # config.sections()

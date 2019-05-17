@@ -1,3 +1,6 @@
 .vscode/settings.json
-v36/
-__pycache__/
+v36/*
+v36.old/*
+pandas/*
+c/*
+__pycache__/*
