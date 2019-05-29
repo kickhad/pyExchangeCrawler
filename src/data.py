@@ -1,17 +1,22 @@
 from sqlalchemy import create_engine, engine
 import cymysql
-import settings as s
+from settings import CONN_STR
 import pandas as pd
 
 
-def getEngine(str=s.DB_PROD, dbecho=bool(s.DEBUG)):
-    engine = create_engine(
-        str, echo=dbecho)
+def getEngine(str=CONN_STR, dbecho=False):
+    engine = create_engine(str, echo=dbecho)
     return engine
 
 
+# def getEngine(str=s.DB_PROD, dbecho=bool(s.DEBUG)):
+#     engine = create_engine(
+#         str, echo=dbecho)
+#     return engine
+
+
 engine = getEngine()
-tmpengine = getEngine(s.DB_TEMP)
+tmpengine = getEngine()
 
 
 def GetQuery(str):

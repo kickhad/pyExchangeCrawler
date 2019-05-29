@@ -4,3 +4,8 @@ v36.old/*
 pandas/*
 c/*
 __pycache__/*
+sqlhelpers/*
+src/__pycache__/*.pyc
+src/DomainKeys.csv
+src/DomainKeys.json
+.vscode/*
