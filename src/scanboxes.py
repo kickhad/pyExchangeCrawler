@@ -14,9 +14,9 @@ from entryids import GetOutlookEntryIds
 def ScanBoxes(session):
     for box in session.ol_boxes:
         box_n = session.Outlook.GetFolderFromID(box)
-        print("Scanning Box :", box_n.parent.name)
+        print("Scanning Box :", box_n.name, '\n')
         # try:
-        GetOutlookEntryIds(session, box_n.parent)
+        #GetOutlookEntryIds(session, box_n.parent)
         GetOutlookEntryIds(session, box_n)
         # except:
         print('oops')

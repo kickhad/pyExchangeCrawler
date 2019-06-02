@@ -9,38 +9,30 @@ import datetime
 import pytz
 
 
-def GetOutlookEntryIds(session, ofolder, recur=False, debug=False):
-    print('\n\t', ': Scanning ', ofolder.name,
-          ' selecting past ', DAYS_TO_CACHE, ' days')
+def GetOutlookEntryIds(session, ofolder, recur=True, debug=False):
+    print('\t', ofolder.name, ofolder.items.count, 'items to scan.',
+          '\n', len(session.EntryIdsList), ' items selected.', '\r\n')
+    # ' selecting past ', DAYS_TO_CACHE, ' days')
     if ofolder.items.count > 0:
-        print('\t\t', ofolder.items.count, 'items to scan')
         start = timeit.default_timer()
 
         storeid = ""
         for x in ofolder.items:
+            pass
             if not storeid:
                 storeid = x.parent.storeid
-
-            # gooddate = False
-            # try:
-            #     tdelta = datetime.datetime.now(pytz.utc) - x.ReceivedTime
-            #     if tdelta.days < DAYS_TO_CACHE:
-            #         gooddate = True
-            # except:
-            #     pass
 
             if x.messageclass == 'IPM.Note':
                 session.EntryIdsList.append(x.entryid)
                 session.StoreIdsList.append(storeid)
                 session.AttCountList.append(x.attachments.count)
-            elif x.messageclass != 'IPM.Note':
-                print('\n\t\t', x.messageclass)
-
         if recur:
             if ofolder.folders.count > 0:
                 for y in ofolder.folders:
-                    print('Recursing', y.folderpath)
-                    GetOutlookEntryIds(session, y)
+                    #print('Recursing', y.folderpath)
+                    next_fld = session.Outlook.GetFolderFromID(
+                        y.EntryID, y.StoreID)
+                    GetOutlookEntryIds(session, next_fld)
 
 
 # def setdiff(session):

@@ -11,15 +11,14 @@ from scanboxes import ScanBoxes
 from OutlookFxns import MessageExtract, AttachmentExtract
 import pandas as pd
 from entryids import GetOutlookEntryIds
+from sqlalchemy import text
 # GET OUTLOOK NAMESAPACE
 session = Sesh()
 
-boxes = True
 scanboxes = False
-attsQuery = ''
-xtraxtmsgs = True
-fetchatts = True
-processmsgfiles = False
+xtraxtmsgs = False
+fetchatts = False
+processmsgfiles = True
 
 if scanboxes:
     ScanBoxes(session)
@@ -29,7 +28,7 @@ if xtraxtmsgs:
     if not scanboxes:
         try:
             session.dfEntrys = pd.read_sql_query(
-                'SELECT * FROM newtbl WHERE concat(EntryID, StoreID0, StoreID1) not in (SELECT concat(EntryID, storeid0, storeid1) from  newtbl2', con=engine)
+                'SELECT * FROM newtbl WHERE concat(EntryID, StoreID0, StoreID1) not in (SELECT concat(EntryID, storeid0, storeid1) from  outlookids', con=engine)
         except:
             session.dfEntrys = pd.read_sql_query(
                 'SELECT * FROM newtbl', con=engine)
@@ -43,11 +42,13 @@ if xtraxtmsgs:
 
 if fetchatts:
     engine = getEngine()
-    qry = 'SELECT OutlookID, EntryID, concat(storeid0, storeid1) as StoreID from outlookids where OutlookID not in (select distinct outlookid from attachments)'
-    session.dfMsgs = pd.read_sql_query(qry, con=engine)
+    qry = text('SELECT * from fxnfetchatts where domain = :domain')
+    session.dfMsgs = pd.read_sql_query(
+        qry,  params={"domain": 'LOBLAW'}, con=engine)
     df = AttachmentExtract(session)
     try:
-        df.to_sql('msgs', con=engine, if_exists='replace')
+        df.to_sql('msgs',
+                  con=engine, if_exists='replace')
     except:
         pass
 
@@ -89,19 +90,3 @@ if processmsgfiles:
                        'FileExt': FileExt,            'Success': Saved})
     engine = getEngine()
     df.to_sql('secondaryatts', con=engine, if_exists='replace')
-
-# z = session.Outlook.OpenSharedItem('c:\\pyext\\Détail du paiement le 20180601 - S.C. JOHNSON 3863---1--.msg')
-# RECURSE MSG FILES SAVED
-
-path = 'c:\\pyext\\'
-
-files = []
-# r=root, d=directories, f = files
-for r, d, f in os.walk(path):
-    for file in f:
-        if not 'Secondary' in r:
-            if '.msg' in file:
-                files.append(os.path.join(r, file))
-
-for f in files:
-    print(f)

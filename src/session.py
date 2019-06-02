@@ -1,5 +1,5 @@
 import sys
-from settings import CONN_STR
+from settings import CONN_STR, AR_ENTRY_ID, AS_ENTRY_ID, IN_ENTRY_ID
 import datetime
 import shortuuid
 # from entryids import GetOutlookEntryIds, GetDatabaseEntryIds
@@ -28,12 +28,9 @@ class Sesh(object):
         # @self.__att_uids = pd.read_sql(
         #    'SELECT * from `final`.`email_att_uids` WHERE not AttUID in (select AttUID from `final`.`email_atts`) LIMIT 2000', self.__engine)
         # self._dfmsgs = pd.DataFrame(columns=self.__colnames)
-        self.__ol_boxes = [
-            "000000006491396D2396AB4696D1C6963A2183EB01009FB6798B7684CD4F933B110F720F27C600000000010C0000"]
-        # ["0000000088A9AE601D4FBF4092794F7DADA800F00180ABE5D4B62B1BBB4AA951CDA06B3165AD00000000010C0100",
-#                           "0000000052D39FFD9378D611965500508B5C12B401002F5A794942E9D21195FC0008C7E9CC5F000003DD578E0000", "0000000088A9AE601D4FBF4092794F7DADA800F00180ABE5D4B62B1BBB4AA951CDA06B3165AD0000000001500100"]
-        self.__path= 'c:/pyext/'
-        self.__outlook= win32com.client.Dispatch(
+        self.__ol_boxes = [AR_ENTRY_ID, AS_ENTRY_ID, IN_ENTRY_ID]
+        self.__path = 'c:/pyext/'
+        self.__outlook = win32com.client.Dispatch(
             "Outlook.Application").GetNamespace("MAPI")
 
         self._msgscolnames = ['OutlookFolder', 'EMailFrom', 'Body', 'AttCount',

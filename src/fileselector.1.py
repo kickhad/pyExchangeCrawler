@@ -21,8 +21,7 @@ from sqlalchemy import text
 xl = win32com.client.Dispatch("Excel.Application")
 
 engine = getEngine()
-qry = text(
-    'SELECT * FROM attachments WHERE left(extension, 2) = \'XL\')
+qry = text('SELECT * FROM attachments WHERE left(extension, 2)= "XL"')
 conn = engine.connect()
 
 df = pd.read_sql(qry, con=engine)
@@ -33,8 +32,8 @@ for a in df.itertuples():
         fn = a.PhysicalFileName
         with open(fn, 'rb') as getmd5:
             data = getmd5.read()
-            gethash = hashlib.md5(data).hexdigest()
-            df.at[a.Index, 'MD5'] = gethash
+            gethash = hashlib.sha512(data).hexdigest()
+            df.at[a.Index, 'SHA512'] = gethash
     except:
         fails.append(fn)
         print('FAILED: ', fn)
