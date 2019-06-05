@@ -15,8 +15,10 @@ Microsoft.Build.Framework.dll
 txt/*
 prod.env
 pyEExt.code-workspace
-tmp.csv
+*.csv
 tmp.json
 .vscode/launch.json
 cert/googletrans.cer
 src/txtstoredf
+*.pck
+*.pickle

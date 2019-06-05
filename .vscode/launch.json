@@ -31,9 +31,9 @@
             "name": "PDF Scan",
             "type": "python",
             "request": "launch",
-            "program": "c:\\Dev\\pyExchangeExtractor\\src\\pdfscanner.py",
+            "program": "c:\\Dev\\pyExchangeExtractor\\src\\doclogger.py",
             "console": "integratedTerminal",
-            "justMyCode": false
+            "justMyCode": true
         }
     ]
 }
